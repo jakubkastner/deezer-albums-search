@@ -324,6 +324,12 @@ namespace deezer
         {
             if (button1.Text == "logout")
             {
+                // smazání cookies
+                nsICookieManager CookieMan;
+                CookieMan = Xpcom.GetService<nsICookieManager>("@mozilla.org/cookiemanager;1");
+                CookieMan = Xpcom.QueryInterface<nsICookieManager>(CookieMan);
+                CookieMan.RemoveAll();
+
                 button3.Enabled = false;
                 uzivatelAuth = "";
                 toolStripStatusLabel1.Text = "";
