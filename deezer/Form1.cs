@@ -27,12 +27,12 @@ namespace deezer
         }
         
         List<Album> nalezenaAlba = new List<Album>();
-        string aplikaceID = "307004";
+        /*string aplikaceID = "307004";
         string aplikaceSecret = "cf579ad333e74cdcf08329c3ad4d0f4c";
         string uzivatelAuth = "";
         string accessToken = "";
         string odkazAccessToken = "";
-        string odkazInfoUzivatel = "";
+        string odkazInfoUzivatel = "";*/
 
         private void ZiskejAlba(string adresa, bool smaz)
         {
@@ -69,7 +69,7 @@ namespace deezer
                 {
                     // jedná se o album (nikoliv o singl)
                     // přidám nalezené album do seznamu
-                    nalezenaAlba.Add(new Album(nalezeneAlbum.id, accessToken));
+                    nalezenaAlba.Add(new Album(nalezeneAlbum.id/*, accessToken*/));
                     treeListView1.SetObjects(nalezenaAlba);
                 }
             }
@@ -119,11 +119,13 @@ namespace deezer
             treeListView1.HeaderFormatStyle = vzhledNadpisu;
 
             toolStripStatusLabel1.Text = "";
+
+            button3.Enabled = true;
             // načte access token ze souboru
-            accessToken = NactiSoubor("access_token.txt").Trim();
+            /*accessToken = NactiSoubor("access_token.txt").Trim();
 
             // přihlásí uživatele
-            PrihlasUzivatele();
+            PrihlasUzivatele();*/
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -165,7 +167,7 @@ namespace deezer
             string album = OdstranZnaky(textBox2.Text);
 
             // získá ba umělce
-            ZiskejAlba("https://api.deezer.com/search/album?q=artist:\"" + umelec + "\" album:\"" + album + "\"?access_token=" + accessToken, true);
+            ZiskejAlba("https://api.deezer.com/search/album?q=artist:\"" + umelec + "\" album:\"" + album + "\"?access_token=" /*+ accessToken*/, true);
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
@@ -184,7 +186,7 @@ namespace deezer
                 url = geckoWebBrowser1.Url.AbsoluteUri;
             }
 
-            if (url.Contains("https://www.google.cz/?error_reason=user_denied"))
+            /*if (url.Contains("https://www.google.cz/?error_reason=user_denied"))
             {
                 // uživatel zrušil přihlášení do aplikace
                 MessageBox.Show("You must log in to your application through your Deezer account.");
@@ -216,10 +218,10 @@ namespace deezer
             {
                 treeListView1.Visible = false;
                 geckoWebBrowser1.Visible = true;
-            }
+            }*/
         }
 
-        private void PrihlasUzivatele()
+        /*private void PrihlasUzivatele()
         {
             odkazInfoUzivatel = "https://api.deezer.com/user/me?access_token=" + accessToken;
             string ziskanyJson;
@@ -239,14 +241,14 @@ namespace deezer
             toolStripStatusLabel1.Tag = uzivatel.link;
             button3.Enabled = true;
             button1.Text = "logout";
-        }
+        }*/
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            UlozSoubor("access_token.txt", accessToken);
+            /*UlozSoubor("access_token.txt", accessToken);*/
         }
 
-        private string NactiSoubor(string cesta)
+       /* private string NactiSoubor(string cesta)
         {
             // načtení dat ze souboru do comboboxu
             if (!File.Exists(cesta))
@@ -263,9 +265,9 @@ namespace deezer
                     }
                 }
             }
-        }
+        }*/
 
-        private void UlozSoubor(string cesta, string zapis)
+        /*private void UlozSoubor(string cesta, string zapis)
         {
             // uložení souboru
             // -> smaže již existující soubor a nahradí ho novým            
@@ -291,7 +293,7 @@ namespace deezer
                     }
                 }
             }
-        }
+        }*/
 
         private void geckoWebBrowser1_Navigated(object sender, GeckoNavigatedEventArgs e)
         {
@@ -303,7 +305,7 @@ namespace deezer
             {
                 url = geckoWebBrowser1.Url.AbsoluteUri;
             }
-            if (url.Contains("https://connect.deezer.com/oauth/auth.php?app_id="))
+            /*if (url.Contains("https://connect.deezer.com/oauth/auth.php?app_id="))
             {
                 treeListView1.Visible = false;
                 geckoWebBrowser1.Visible = true;
@@ -312,7 +314,7 @@ namespace deezer
             {
                 treeListView1.Visible = true;
                 geckoWebBrowser1.Visible = false;
-            }
+            }*/
         }
 
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
@@ -321,7 +323,7 @@ namespace deezer
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
+        {/*
             if (button1.Text == "logout")
             {
                 // smazání cookies
@@ -335,7 +337,7 @@ namespace deezer
                 toolStripStatusLabel1.Text = "";
                 button1.Text = "login";
             }
-            geckoWebBrowser1.Navigate("https://connect.deezer.com/oauth/auth.php?app_id=" + aplikaceID + "&redirect_uri=https://google.cz/");
+            geckoWebBrowser1.Navigate("https://connect.deezer.com/oauth/auth.php?app_id=" + aplikaceID + "&redirect_uri=https://google.cz/");*/
         }
 
         private void treeListView1_CellEditFinished(object sender, CellEditEventArgs e)
