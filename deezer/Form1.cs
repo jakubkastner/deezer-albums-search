@@ -120,9 +120,10 @@ namespace deezer
 
             toolStripStatusLabel1.Text = "";
             // načte access token ze souboru
-            accessToken = NactiSoubor("access_token.txt");
+            accessToken = NactiSoubor("access_token.txt").Trim();
+
             // přihlásí uživatele
-            NactiUzivatele();
+            PrihlasUzivatele();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -186,7 +187,7 @@ namespace deezer
             if (url.Contains("https://www.google.cz/?error_reason=user_denied"))
             {
                 // uživatel zrušil přihlášení do aplikace
-                MessageBox.Show("Pro fungování aplikace se musíte přihlásit skrz svůj účet na Deezeru");
+                MessageBox.Show("You must log in to your application through your Deezer account.");
                 geckoWebBrowser1.Navigate("https://connect.deezer.com/oauth/auth.php?app_id=" + aplikaceID + "&redirect_uri=https://google.cz/");
             }
             else if (url.Contains("https://www.google.cz/?code="))
@@ -209,7 +210,7 @@ namespace deezer
                 string[] accessTokenInfo = accessToken.Split('&');
                 accessToken = accessTokenInfo.First().Replace("access_token=", "");
                 string accessTokenPlatnost = accessTokenInfo.Last().Replace("expires=", "");
-                NactiUzivatele();
+                PrihlasUzivatele();
             }
             else
             {
@@ -218,7 +219,7 @@ namespace deezer
             }
         }
 
-        private void NactiUzivatele()
+        private void PrihlasUzivatele()
         {
             odkazInfoUzivatel = "https://api.deezer.com/user/me?access_token=" + accessToken;
             string ziskanyJson;
@@ -276,7 +277,7 @@ namespace deezer
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ukládání souboru");
+                    MessageBox.Show(ex.Message, "Saving the file");
                     return;
                 }
             }
