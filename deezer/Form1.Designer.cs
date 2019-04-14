@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.treeListView1 = new BrightIdeasSoftware.TreeListView();
@@ -105,7 +106,7 @@
             this.treeListView1.SelectedForeColor = System.Drawing.Color.White;
             this.treeListView1.ShowGroups = false;
             this.treeListView1.ShowImagesOnSubItems = true;
-            this.treeListView1.Size = new System.Drawing.Size(884, 436);
+            this.treeListView1.Size = new System.Drawing.Size(886, 436);
             this.treeListView1.TabIndex = 7;
             this.treeListView1.UseCompatibleStateImageBehavior = false;
             this.treeListView1.UseFiltering = true;
@@ -245,6 +246,7 @@
             this.ClientSize = new System.Drawing.Size(984, 461);
             this.Controls.Add(this.splitContainer1);
             this.ForeColor = System.Drawing.Color.White;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Deezer album search";
