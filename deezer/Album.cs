@@ -11,7 +11,6 @@ namespace deezer
 {
     public class Album
     {
-        // ?access_token=" + accessToken + "
         public int Id { get; set; }
         public string Nazev { get; set; }
         public string CoverNejvetsi { get; set; }
@@ -50,17 +49,16 @@ namespace deezer
         public List<SkladbyAlba> Skladby { get; set; }
 
         // vytvoří album
-        public Album(int albumId/*, string accessToken*/)
+        public Album(int albumId)
         {
-            InicializaceAlba(albumId/*, accessToken*/);
+            InicializaceAlba(albumId);
         }
 
-        public void InicializaceAlba(int albumId/*, string accessToken*/)
+        public void InicializaceAlba(int albumId)
         {
-            // ?access_token=" + accessToken + "
             this.Id = albumId;
             // získá skladbu - id, název
-            string adresa = "https://api.deezer.com/album/" + albumId /*+ "?access_token=" + accessToken*/;
+            string adresa = "https://api.deezer.com/album/" + albumId;
 
             string ziskanyJson;
             using (WebClient klient = new WebClient())
@@ -72,7 +70,7 @@ namespace deezer
             {
                 if (chybaJson.Kod == 4)
                 {
-                    InicializaceAlba(albumId/*, accessToken*/);
+                    InicializaceAlba(albumId);
                 }
                 return;
             }
@@ -92,7 +90,7 @@ namespace deezer
             int pocet = 0;
             foreach (var nalezenaSkladbaAlba in seznamNalezenychSkladeb.tracks.data)
             {
-                this.Skladby.Add(new SkladbyAlba(nalezenaSkladbaAlba.id, ++pocet, nalezenaSkladbaAlba.title, this.Interpreti/*, accessToken*/));
+                this.Skladby.Add(new SkladbyAlba(nalezenaSkladbaAlba.id, ++pocet, nalezenaSkladbaAlba.title, this.Interpreti));
             }
         }
 
@@ -136,7 +134,7 @@ namespace deezer
                 return rozdeleny;
             }
 
-            public SkladbyAlba(int idSkladby, int cisloSkladby, string nazevSkladby, List<string> interpetiAlba/*, string accessToken*/)
+            public SkladbyAlba(int idSkladby, int cisloSkladby, string nazevSkladby, List<string> interpetiAlba)
             {
                 this.Id = idSkladby;
                 this.Cislo = cisloSkladby;
@@ -145,19 +143,6 @@ namespace deezer
                 List<string> featuringRozdeleny = new List<string>();
                 featuringRozdeleny.AddRange(RozdelString(nazevSkladby, "(ft."));
                 featuringRozdeleny.AddRange(RozdelString(nazevSkladby, "(feat."));
-                /*if (nazevSkladby.Contains("(ft."))
-                {
-                    // je featuring v názvu skladby
-                    featuringRozdeleny = nazevSkladby.Split(new string[] { "(ft." }, StringSplitOptions.None)
-                                                     .ToList();
-
-                }
-                else if (nazevSkladby.Contains("(feat."))
-                {
-                    // je featuring v názvu skladby
-                    featuringRozdeleny = nazevSkladby.Split(new string[] { "(feat." }, StringSplitOptions.None)
-                                                     .ToList();
-                }*/
 
                 if (featuringRozdeleny.Count >= 2)
                 {
@@ -197,7 +182,7 @@ namespace deezer
 
                 this.Nazev = nazevSkladby;
 
-                ZiskejInterpretySkladby(interpetiAlba/*, accessToken*/);
+                ZiskejInterpretySkladby(interpetiAlba);
 
                 foreach (var interpretZNazvu in interpretiZNazvu)
                 {
@@ -209,10 +194,10 @@ namespace deezer
                 }
             }
 
-            private void ZiskejInterpretySkladby(List<string> interpretiAlba/*, string accessToken*/)
+            private void ZiskejInterpretySkladby(List<string> interpretiAlba)
             {
                 // získá skladbu - interprety
-                string adresa = "https://api.deezer.com/track/" + this.Id /*+ "?access_token=" + accessToken*/;
+                string adresa = "https://api.deezer.com/track/" + this.Id;
 
                 string ziskanyJson;
                 using (WebClient klient = new WebClient())
@@ -224,7 +209,7 @@ namespace deezer
                 {
                     if (chybaJson.Kod == 4)
                     {
-                        ZiskejInterpretySkladby(interpretiAlba/*, accessToken*/);
+                        ZiskejInterpretySkladby(interpretiAlba);
                     }
                     return;
                 }

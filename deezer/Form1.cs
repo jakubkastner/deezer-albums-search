@@ -27,12 +27,6 @@ namespace deezer
         }
         
         List<Album> nalezenaAlba = new List<Album>();
-        /*string aplikaceID = "307004";
-        string aplikaceSecret = "cf579ad333e74cdcf08329c3ad4d0f4c";
-        string uzivatelAuth = "";
-        string accessToken = "";
-        string odkazAccessToken = "";
-        string odkazInfoUzivatel = "";*/
 
         private void ZiskejAlba(string adresa, bool smaz)
         {
@@ -121,11 +115,6 @@ namespace deezer
             toolStripStatusLabel1.Text = "";
 
             button3.Enabled = true;
-            // načte access token ze souboru
-            /*accessToken = NactiSoubor("access_token.txt").Trim();
-
-            // přihlásí uživatele
-            PrihlasUzivatele();*/
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -174,170 +163,6 @@ namespace deezer
         {
             button3.Enabled = true;
             button3.Text = "search";
-        }
-
-        private void geckoWebBrowser1_DocumentCompleted(object sender, Gecko.Events.GeckoDocumentCompletedEventArgs e)
-        {
-            string url = "";
-
-            if (geckoWebBrowser1.Url != null)
-            {
-                // zjistí aktuální adresu
-                url = geckoWebBrowser1.Url.AbsoluteUri;
-            }
-
-            /*if (url.Contains("https://www.google.cz/?error_reason=user_denied"))
-            {
-                // uživatel zrušil přihlášení do aplikace
-                MessageBox.Show("You must log in to your application through your Deezer account.");
-                geckoWebBrowser1.Navigate("https://connect.deezer.com/oauth/auth.php?app_id=" + aplikaceID + "&redirect_uri=https://google.cz/");
-            }
-            else if (url.Contains("https://www.google.cz/?code="))
-            {
-                // získání Auth uživatele
-                uzivatelAuth = url.Replace("https://www.google.cz/?code=", "");
-                odkazAccessToken = "https://connect.deezer.com/oauth/access_token.php?app_id=" + aplikaceID + "&secret=" + aplikaceSecret + "&code=" + uzivatelAuth;
-                geckoWebBrowser1.Navigate(odkazAccessToken);
-            }
-            else if (url == odkazAccessToken)
-            {
-                if (String.IsNullOrEmpty(uzivatelAuth))
-                {
-                    geckoWebBrowser1.Navigate("https://connect.deezer.com/oauth/auth.php?app_id=" + aplikaceID + "&redirect_uri=https://google.cz/");
-                    return;
-                }
-                // získání access tokenu
-                accessToken = geckoWebBrowser1.Document.Body.OuterHtml.Replace("<body>", "")
-                                                                      .Replace("</body>", "");
-                string[] accessTokenInfo = accessToken.Split('&');
-                accessToken = accessTokenInfo.First().Replace("access_token=", "");
-                string accessTokenPlatnost = accessTokenInfo.Last().Replace("expires=", "");
-                PrihlasUzivatele();
-            }
-            else
-            {
-                treeListView1.Visible = false;
-                geckoWebBrowser1.Visible = true;
-            }*/
-        }
-
-        /*private void PrihlasUzivatele()
-        {
-            odkazInfoUzivatel = "https://api.deezer.com/user/me?access_token=" + accessToken;
-            string ziskanyJson;
-            using (WebClient klient = new WebClient())
-            {
-                ziskanyJson = klient.DownloadString(odkazInfoUzivatel);
-            }
-            Chyba chybaJson = new Chyba(ziskanyJson, false);
-            if (chybaJson.JeChyba)
-            {
-                uzivatelAuth = "";
-                geckoWebBrowser1.Navigate("https://connect.deezer.com/oauth/auth.php?app_id=" + aplikaceID + "&redirect_uri=https://google.cz/");
-                return;
-            }
-            var uzivatel = JsonConvert.DeserializeObject<Uzivatel>(ziskanyJson);
-            toolStripStatusLabel1.Text = "User succesfully logged in - " + uzivatel.name + " (" + uzivatel.id.ToString() + ")";
-            toolStripStatusLabel1.Tag = uzivatel.link;
-            button3.Enabled = true;
-            button1.Text = "logout";
-        }*/
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            /*UlozSoubor("access_token.txt", accessToken);*/
-        }
-
-       /* private string NactiSoubor(string cesta)
-        {
-            // načtení dat ze souboru do comboboxu
-            if (!File.Exists(cesta))
-            {
-                return "";
-            }
-            else
-            {
-                using (FileStream streamNacti = new FileStream(cesta, FileMode.Open))
-                {
-                    using (StreamReader nacti = new StreamReader(streamNacti, Encoding.Default))
-                    {
-                        return nacti.ReadToEnd();
-                    }
-                }
-            }
-        }*/
-
-        /*private void UlozSoubor(string cesta, string zapis)
-        {
-            // uložení souboru
-            // -> smaže již existující soubor a nahradí ho novým            
-            if (File.Exists(cesta))
-            {
-                try
-                {
-                    File.Delete(cesta);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Saving the file");
-                    return;
-                }
-            }
-            using (FileStream streamUloz = new FileStream(cesta, FileMode.Append))
-            {
-                using (StreamWriter uloz = new StreamWriter(streamUloz, Encoding.Default))
-                {
-                    if (!String.IsNullOrEmpty(zapis))
-                    {
-                        uloz.WriteLine(zapis);
-                    }
-                }
-            }
-        }*/
-
-        private void geckoWebBrowser1_Navigated(object sender, GeckoNavigatedEventArgs e)
-        {
-
-            string url = "";
-
-            // zjistí aktuální adresu
-            if (geckoWebBrowser1.Url != null)
-            {
-                url = geckoWebBrowser1.Url.AbsoluteUri;
-            }
-            /*if (url.Contains("https://connect.deezer.com/oauth/auth.php?app_id="))
-            {
-                treeListView1.Visible = false;
-                geckoWebBrowser1.Visible = true;
-            }
-            else
-            {
-                treeListView1.Visible = true;
-                geckoWebBrowser1.Visible = false;
-            }*/
-        }
-
-        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
-        {
-            Process.Start(toolStripStatusLabel1.Tag.ToString());
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {/*
-            if (button1.Text == "logout")
-            {
-                // smazání cookies
-                nsICookieManager CookieMan;
-                CookieMan = Xpcom.GetService<nsICookieManager>("@mozilla.org/cookiemanager;1");
-                CookieMan = Xpcom.QueryInterface<nsICookieManager>(CookieMan);
-                CookieMan.RemoveAll();
-
-                button3.Enabled = false;
-                uzivatelAuth = "";
-                toolStripStatusLabel1.Text = "";
-                button1.Text = "login";
-            }
-            geckoWebBrowser1.Navigate("https://connect.deezer.com/oauth/auth.php?app_id=" + aplikaceID + "&redirect_uri=https://google.cz/");*/
         }
 
         private void treeListView1_CellEditFinished(object sender, CellEditEventArgs e)
