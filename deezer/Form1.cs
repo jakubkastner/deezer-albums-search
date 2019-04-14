@@ -63,7 +63,7 @@ namespace deezer
                 {
                     // jedná se o album (nikoliv o singl)
                     // přidám nalezené album do seznamu
-                    nalezenaAlba.Add(new Album(nalezeneAlbum.id/*, accessToken*/));
+                    nalezenaAlba.Add(new Album(nalezeneAlbum.id));
                     treeListView1.SetObjects(nalezenaAlba);
                 }
             }
@@ -156,7 +156,7 @@ namespace deezer
             string album = OdstranZnaky(textBox2.Text);
 
             // získá ba umělce
-            ZiskejAlba("https://api.deezer.com/search/album?q=artist:\"" + umelec + "\" album:\"" + album + "\"?access_token=" /*+ accessToken*/, true);
+            ZiskejAlba("https://api.deezer.com/search/album?q=artist:\"" + umelec + "\" album:\"" + album + "\"?access_token=", true);
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
