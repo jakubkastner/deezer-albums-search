@@ -19,13 +19,35 @@ namespace deezer
 {
     public partial class Form1 : Form
     {
+        /*public Form1()
+        {
+            InitializeComponent();
+            // prohlížeč
+            Xpcom.Initialize("Firefox");
+        }*/
         public Form1()
         {
             InitializeComponent();
             // prohlížeč
             Xpcom.Initialize("Firefox");
+            string[] args = Environment.GetCommandLineArgs();
+            if (args != null)
+            {
+                if (args.Length > 0)
+                {
+                    if (args.Length > 2)
+                    {
+                        textBox1.Text = args[2];
+                    }
+                    if (args.Length > 1)
+                    {
+                        textBox1.Text = args[1];
+                        button3_Click(null, null);
+                    }
+                }
+            }
         }
-        
+
         List<Album> nalezenaAlba = new List<Album>();
 
         private void ZiskejAlba(string adresa, bool smaz)
