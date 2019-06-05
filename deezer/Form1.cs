@@ -14,6 +14,7 @@ using System.Text;
 using System.Diagnostics;
 using BrightIdeasSoftware;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace deezer
 {
@@ -37,7 +38,7 @@ namespace deezer
                 {
                     if (args.Length > 2)
                     {
-                        textBox1.Text = args[2];
+                        textBox2.Text = args[2];
                     }
                     if (args.Length > 1)
                     {
@@ -202,6 +203,132 @@ namespace deezer
             }
             treeListView1.RefreshObject((object)e.RowObject);
             treeListView1.RefreshItem((OLVListItem)e.ListViewItem);
+        }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog vyberSlozky = new FolderBrowserDialog();
+            vyberSlozky.Description = "select directory to download files";
+
+            // nastaví výchozí cestu
+            if (Directory.Exists(label3.Text))
+            {
+                // jedná se o složku
+                vyberSlozky.SelectedPath = label3.Text;
+            }
+
+            if (vyberSlozky.ShowDialog() == DialogResult.OK)
+            {
+                label3.Text = vyberSlozky.SelectedPath;
+            }
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            var vybrano = treeListView1.SelectedObjects;
+            if (vybrano == null)
+            {
+                return;
+            }
+            if (!Directory.Exists(label3.Text))
+            {
+                Button2_Click(null, null);
+            }
+            if (!Directory.Exists(label3.Text))
+            {
+                return;
+            }
+
+            int stazeno = 0;
+
+            foreach (var asiAlbum in vybrano)
+            {
+                if (!(asiAlbum is Album))
+                {
+                    continue;
+                }
+                Album album = (Album)asiAlbum;
+                string cesta = album.Interpret + " - " + album.Datum + " " + album.Nazev + ".txt";
+                cesta = String.Join("", cesta.Split(Path.GetInvalidFileNameChars()));
+                cesta = Path.Combine(label3.Text, cesta);
+                string albumVysledek = "";
+                foreach (var skladba in album.Skladby)
+                {
+                    string skladbaVysledek = skladba.Cislo + " " + skladba.Nazev;
+                    string inter = skladba.Interpret;
+                    if (!String.IsNullOrEmpty(inter))
+                    {
+                        skladbaVysledek += " (ft. " + inter + ")";
+                    }
+                    albumVysledek += skladbaVysledek + Environment.NewLine;
+                }
+                using (FileStream str = new FileStream(cesta, FileMode.Create, FileAccess.Write))
+                {
+                    using (StreamWriter zapisovacka = new StreamWriter(str))
+                    {
+                        zapisovacka.Write(albumVysledek);
+                    }
+                }
+                if (File.Exists(cesta))
+                {
+                    stazeno++;
+                }
+            }
+            toolStripStatusLabel1.Text = "successfully downloaded " + stazeno + " tracklists";
+        }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            var vybrano = treeListView1.SelectedObjects;
+            if (vybrano == null)
+            {
+                return;
+            }
+            if (!Directory.Exists(label3.Text))
+            {
+                Button2_Click(null, null);
+            }
+            if (!Directory.Exists(label3.Text))
+            {
+                return;
+            }
+
+            int stazeno = 0;
+
+            foreach (var asiAlbum in vybrano)
+            {
+                if (!(asiAlbum is Album))
+                {
+                    continue;
+                }
+                Album album = (Album)asiAlbum;
+                string cesta = album.Interpret + " - " + album.Datum + " " + album.Nazev + ".jpeg";
+                cesta = String.Join("", cesta.Split(Path.GetInvalidFileNameChars()));
+                cesta = Path.Combine(label3.Text, cesta);
+
+                using (WebClient client = new WebClient())
+                {
+                    using (Stream str = client.OpenRead(album.CoverNejvetsi))
+                    {
+                        Bitmap bitmap = new Bitmap(str);
+
+                        if (bitmap != null)
+                        {
+                            bitmap.Save(cesta, ImageFormat.Jpeg);
+                        }
+                    }
+                }
+                if (File.Exists(cesta))
+                {
+                    stazeno++;
+                }
+            }
+            toolStripStatusLabel1.Text = "successfully downloaded " + stazeno + " covers";
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
         }
     }
 }
