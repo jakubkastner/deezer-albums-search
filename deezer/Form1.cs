@@ -138,6 +138,11 @@ namespace deezer
             toolStripStatusLabel1.Text = "";
 
             button3.Enabled = true;
+            string cesta = NactiSoubor("cesta.txt");
+            if (Directory.Exists(cesta))
+            {
+                label3.Text = cesta.Trim();
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -248,7 +253,7 @@ namespace deezer
                     continue;
                 }
                 Album album = (Album)asiAlbum;
-                string cesta = album.Interpret + " - " + album.Datum + " " + album.Nazev + ".txt";
+                string cesta = album.Interpret + " - " + album.Datum.Split('-').First() + " " + album.Nazev + ".txt";
                 cesta = String.Join("", cesta.Split(Path.GetInvalidFileNameChars()));
                 cesta = Path.Combine(label3.Text, cesta);
                 string albumVysledek = "";
@@ -302,7 +307,7 @@ namespace deezer
                     continue;
                 }
                 Album album = (Album)asiAlbum;
-                string cesta = album.Interpret + " - " + album.Datum + " " + album.Nazev + ".jpeg";
+                string cesta = album.Interpret + " - " + album.Datum.Split('-').First() + " " + album.Nazev + ".jpeg";
                 cesta = String.Join("", cesta.Split(Path.GetInvalidFileNameChars()));
                 cesta = Path.Combine(label3.Text, cesta);
 
@@ -328,7 +333,10 @@ namespace deezer
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            if (Directory.Exists(label3.Text))
+            {
+                UlozSoubor("cesta.txt", label3.Text);
+            }
         }
 
         private string NactiSoubor(string cesta)

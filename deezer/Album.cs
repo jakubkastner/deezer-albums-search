@@ -78,6 +78,7 @@ namespace deezer
 
             this.Nazev = seznamNalezenychSkladeb.title;
             this.CoverNejvetsi = seznamNalezenychSkladeb.cover_xl;
+            this.CoverNejvetsi = this.CoverNejvetsi.Replace("1000", "2000");
             this.Datum = seznamNalezenychSkladeb.release_date;
 
             this.Interpreti = new List<string>();
