@@ -330,5 +330,51 @@ namespace deezer
         {
 
         }
+
+        private string NactiSoubor(string cesta)
+        {
+            // načtení dat ze souboru do comboboxu
+            if (!File.Exists(cesta))
+            {
+                return "";
+            }
+            else
+            {
+                using (FileStream streamNacti = new FileStream(cesta, FileMode.Open))
+                {
+                    using (StreamReader nacti = new StreamReader(streamNacti, Encoding.Default))
+                    {
+                        return nacti.ReadToEnd();
+                    }
+                }
+            }
+        }
+        private void UlozSoubor(string cesta, string zapis)
+        {
+            // uložení souboru
+            // -> smaže již existující soubor a nahradí ho novým            
+            if (File.Exists(cesta))
+            {
+                try
+                {
+                    File.Delete(cesta);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Saving the file");
+                    return;
+                }
+            }
+            using (FileStream streamUloz = new FileStream(cesta, FileMode.Append))
+            {
+                using (StreamWriter uloz = new StreamWriter(streamUloz, Encoding.Default))
+                {
+                    if (!String.IsNullOrEmpty(zapis))
+                    {
+                        uloz.WriteLine(zapis);
+                    }
+                }
+            }
+        }
     }
 }
