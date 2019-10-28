@@ -95,7 +95,9 @@ namespace deezer
                 {
                     return;
                 }
-                if (nalezeneAlbum.record_type.ToLower() == "album")
+                // pokud nenajde allbum nebo ep, může vrátit i singl
+                string typAlbumu = nalezeneAlbum.record_type.ToLower();
+                if (typAlbumu == "album" || typAlbumu == "ep")
                 {
                     // jedná se o album (nikoliv o singl)
                     // přidám nalezené album do seznamu
