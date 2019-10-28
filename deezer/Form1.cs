@@ -20,14 +20,11 @@ namespace deezer
 {
     public partial class Form1 : Form
     {
-        /*public Form1()
-        {
-            InitializeComponent();
-            // prohlížeč
-            Xpcom.Initialize("Firefox");
-        }*/
+        bool slozkaZParametru;
+
         public Form1()
         {
+            slozkaZParametru = false;
             InitializeComponent();
             // prohlížeč
             Xpcom.Initialize("Firefox");
@@ -36,12 +33,28 @@ namespace deezer
             {
                 if (args.Length > 0)
                 {
+                    if (args.Length > 3)
+                    {
+                        // cesta
+                        string slozka = args[3];
+                        if (File.Exists(slozka))
+                        {
+                            slozka = Path.GetDirectoryName(slozka);
+                        }
+                        if (Directory.Exists(slozka))
+                        {
+                            label3.Text = slozka;
+                            slozkaZParametru = true;
+                        }
+                    }
                     if (args.Length > 2)
                     {
+                        // umělec
                         textBox2.Text = args[2];
                     }
                     if (args.Length > 1)
                     {
+                        // album
                         textBox1.Text = args[1];
                         button3_Click(null, null);
                     }
@@ -138,10 +151,13 @@ namespace deezer
             toolStripStatusLabel1.Text = "";
 
             button3.Enabled = true;
-            string cesta = NactiSoubor("cesta.txt");
-            if (Directory.Exists(cesta))
+            if (!slozkaZParametru)
             {
-                label3.Text = cesta.Trim();
+                string cesta = NactiSoubor("cesta.txt");
+                if (Directory.Exists(cesta))
+                {
+                    label3.Text = cesta.Trim();
+                }
             }
         }
 
@@ -225,6 +241,7 @@ namespace deezer
             if (vyberSlozky.ShowDialog() == DialogResult.OK)
             {
                 label3.Text = vyberSlozky.SelectedPath;
+                slozkaZParametru = false;
             }
         }
 
@@ -253,7 +270,16 @@ namespace deezer
                     continue;
                 }
                 Album album = (Album)asiAlbum;
-                string cesta = album.Interpret + " - " + album.Datum.Split('-').First() + " " + album.Nazev + ".txt";
+                string cesta = "";
+                if (slozkaZParametru)
+                {
+                    cesta += "tracklist";
+                }
+                else
+                {
+                    cesta += album.Interpret + " - " + album.Datum.Split('-').First() + " " + album.Nazev;
+                }
+                cesta += ".txt";
                 cesta = String.Join("", cesta.Split(Path.GetInvalidFileNameChars()));
                 cesta = Path.Combine(label3.Text, cesta);
                 string albumVysledek = "";
@@ -307,7 +333,16 @@ namespace deezer
                     continue;
                 }
                 Album album = (Album)asiAlbum;
-                string cesta = album.Interpret + " - " + album.Datum.Split('-').First() + " " + album.Nazev + ".jpeg";
+                string cesta = "";
+                if (slozkaZParametru)
+                {
+                    cesta += "cover";
+                }
+                else
+                {
+                    cesta += album.Interpret + " - " + album.Datum.Split('-').First() + " " + album.Nazev;
+                }
+                cesta += ".jpg";
                 cesta = String.Join("", cesta.Split(Path.GetInvalidFileNameChars()));
                 cesta = Path.Combine(label3.Text, cesta);
 
@@ -333,7 +368,7 @@ namespace deezer
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Directory.Exists(label3.Text))
+            if (Directory.Exists(label3.Text) && !slozkaZParametru)
             {
                 UlozSoubor("cesta.txt", label3.Text);
             }
