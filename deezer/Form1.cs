@@ -8,7 +8,6 @@ using System.Net;
 using Newtonsoft.Json;
 using System.Linq;
 
-using Gecko;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
@@ -27,7 +26,6 @@ namespace deezer
             slozkaZParametru = false;
             InitializeComponent();
             // prohlížeč
-            Xpcom.Initialize("Firefox");
             string[] args = Environment.GetCommandLineArgs();
             if (args != null)
             {
@@ -64,7 +62,7 @@ namespace deezer
 
         List<Album> nalezenaAlba = new List<Album>();
 
-        private void ZiskejAlba(string adresa, bool smaz)
+        private void ZiskejAlba(string adresa, bool smaz, bool vsechnyReleasy)
         {
             // získá json soubor alba
 
@@ -78,7 +76,7 @@ namespace deezer
             {
                 if (chybaJson.Kod == 4)
                 {
-                    ZiskejAlba(adresa, smaz);
+                    ZiskejAlba(adresa, smaz, vsechnyReleasy);
                 }
                 return;
             }
@@ -97,7 +95,7 @@ namespace deezer
                 }
                 // pokud nenajde allbum nebo ep, může vrátit i singl
                 string typAlbumu = nalezeneAlbum.record_type.ToLower();
-                if (typAlbumu == "album" || typAlbumu == "ep")
+                if (vsechnyReleasy || typAlbumu == "album" || typAlbumu == "ep")
                 {
                     // jedná se o album (nikoliv o singl)
                     // přidám nalezené album do seznamu
@@ -108,7 +106,7 @@ namespace deezer
             if (!String.IsNullOrEmpty(seznamNalezenychAlb.next))
             {
                 // pokud existuje další stránka vyhledávání
-                ZiskejAlba(seznamNalezenychAlb.next, false);
+                ZiskejAlba(seznamNalezenychAlb.next, false, vsechnyReleasy);
             }
         }
 
@@ -202,17 +200,13 @@ namespace deezer
             string album = OdstranZnaky(textBox2.Text);
 
             // získá ba umělce
-            ZiskejAlba("https://api.deezer.com/search/album?q=artist:\"" + umelec + "\" album:\"" + album + "\"?access_token=", true);
+            ZiskejAlba("https://api.deezer.com/search/album?q=artist:\"" + umelec + "\" album:\"" + album + "\"?access_token=", true, checkBox1.Checked);
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             button3.Enabled = true;
             button3.Text = "search";
-        }
-
-        private void treeListView1_CellEditFinished(object sender, CellEditEventArgs e)
-        {
         }
 
         private void treeListView1_CellEditFinishing(object sender, CellEditEventArgs e)
@@ -419,6 +413,15 @@ namespace deezer
                         uloz.WriteLine(zapis);
                     }
                 }
+            }
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            string slozka = label3.Text;
+            if (Directory.Exists(slozka))
+            {
+                Process.Start(slozka);
             }
         }
     }
