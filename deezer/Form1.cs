@@ -1,19 +1,17 @@
 ﻿
 using System;
 using System.Collections.Generic;
-
 using System.Windows.Forms;
 using System.Net;
-
 using Newtonsoft.Json;
 using System.Linq;
-
 using System.IO;
 using System.Text;
 using System.Diagnostics;
 using BrightIdeasSoftware;
 using System.Drawing;
 using System.Drawing.Imaging;
+using Ookii.Dialogs.Wpf;
 
 namespace deezer
 {
@@ -224,8 +222,9 @@ namespace deezer
 
         private void Button2_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog vyberSlozky = new FolderBrowserDialog();
+            VistaFolderBrowserDialog vyberSlozky = new VistaFolderBrowserDialog();
             vyberSlozky.Description = "select directory to download files";
+            vyberSlozky.UseDescriptionForTitle = true;
 
             // nastaví výchozí cestu
             if (Directory.Exists(label3.Text))
@@ -234,7 +233,7 @@ namespace deezer
                 vyberSlozky.SelectedPath = label3.Text;
             }
 
-            if (vyberSlozky.ShowDialog() == DialogResult.OK)
+            if ((bool)vyberSlozky.ShowDialog())
             {
                 label3.Text = vyberSlozky.SelectedPath;
                 slozkaZParametru = false;
