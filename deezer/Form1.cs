@@ -18,10 +18,12 @@ namespace deezer
     public partial class Form1 : Form
     {
         bool slozkaZParametru;
+        string nazevCoveru;
 
         public Form1()
         {
             slozkaZParametru = false;
+            nazevCoveru = "";
             InitializeComponent();
             // prohlížeč
             string[] args = Environment.GetCommandLineArgs();
@@ -29,6 +31,10 @@ namespace deezer
             {
                 if (args.Length > 0)
                 {
+                    if (args.Length > 4)
+                    {
+                        nazevCoveru = args[4];
+                    }
                     if (args.Length > 3)
                     {
                         // cesta
@@ -329,7 +335,11 @@ namespace deezer
                 }
                 Album album = (Album)asiAlbum;
                 string cesta = "";
-                if (slozkaZParametru)
+                if (!String.IsNullOrEmpty(nazevCoveru))
+                {
+                    cesta += nazevCoveru;
+                }
+                else if (slozkaZParametru)
                 {
                     cesta += "cover";
                 }
@@ -341,24 +351,31 @@ namespace deezer
                 cesta = String.Join("", cesta.Split(Path.GetInvalidFileNameChars()));
                 cesta = Path.Combine(label3.Text, cesta);
 
-                using (WebClient client = new WebClient())
+                try
                 {
-                    using (Stream str = client.OpenRead(album.CoverNejvetsi))
+                    using (WebClient client = new WebClient())
                     {
-                        Bitmap bitmap = new Bitmap(str);
-
-                        if (bitmap != null)
+                        using (Stream str = client.OpenRead(album.CoverNejvetsi))
                         {
-                            bitmap.Save(cesta, ImageFormat.Jpeg);
+                            Bitmap bitmap = new Bitmap(str);
+
+                            if (bitmap != null)
+                            {
+                                bitmap.Save(cesta, ImageFormat.Jpeg);
+                            }
                         }
                     }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Can't download cover");
                 }
                 if (File.Exists(cesta))
                 {
                     stazeno++;
                 }
             }
-            toolStripStatusLabel1.Text = "successfully downloaded " + stazeno + " covers";
+            toolStripStatusLabel1.Text = "successfully downloaded " + stazeno + " cover(s)";
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
