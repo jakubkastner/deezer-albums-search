@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deezer-albums-search", "deezer-albums-search\deezer-albums-search.csproj", "{AD5DB975-8FD9-4536-9DA1-57C001D5B280}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "deezer-albums-search_installer", "deezer-albums-search_installer\deezer-albums-search_installer.vdproj", "{BAF369FE-0E21-4914-AA61-6D3B89749EDB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{AD5DB975-8FD9-4536-9DA1-57C001D5B280}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD5DB975-8FD9-4536-9DA1-57C001D5B280}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD5DB975-8FD9-4536-9DA1-57C001D5B280}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAF369FE-0E21-4914-AA61-6D3B89749EDB}.Debug|Any CPU.ActiveCfg = Debug
+		{BAF369FE-0E21-4914-AA61-6D3B89749EDB}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
