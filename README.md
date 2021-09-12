@@ -1,4 +1,4 @@
 # deezer-albums-search
 
-Download Deezer albums search here:
-https://github.com/jakubkastner/deezer-albums-search/raw/master/deezer%20search.exe
+## Download link
+[Download here](https://github.com/jakubkastner/deezer-albums-search/raw/master/deezer-albums-search_installer/Debug/deezer-albums-search_installer.msi)
