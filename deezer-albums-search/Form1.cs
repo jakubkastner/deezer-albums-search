@@ -19,11 +19,13 @@ namespace deezer
     {
         bool slozkaZParametru;
         string nazevCoveru;
+        string slozkaProgramuData;
 
         public Form1()
         {
             slozkaZParametru = false;
             nazevCoveru = "";
+            slozkaProgramuData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "deezer-albums-search", "data");
             InitializeComponent();
             // prohlížeč
             string[] args = Environment.GetCommandLineArgs();
@@ -157,7 +159,7 @@ namespace deezer
             button3.Enabled = true;
             if (!slozkaZParametru)
             {
-                string cesta = NactiSoubor("cesta.txt");
+                string cesta = NactiSoubor(Path.Combine(slozkaProgramuData, "cesta.txt"));
                 if (Directory.Exists(cesta))
                 {
                     label3.Text = cesta.Trim();
@@ -382,7 +384,7 @@ namespace deezer
         {
             if (Directory.Exists(label3.Text) && !slozkaZParametru)
             {
-                UlozSoubor("cesta.txt", label3.Text);
+                UlozSoubor(Path.Combine(slozkaProgramuData, "cesta.txt"), label3.Text);
             }
         }
 
@@ -420,15 +422,37 @@ namespace deezer
                     return;
                 }
             }
-            using (FileStream streamUloz = new FileStream(cesta, FileMode.Append))
+            string slozka = Path.GetDirectoryName(cesta);
+            if (!Directory.Exists(slozka))
             {
-                using (StreamWriter uloz = new StreamWriter(streamUloz, Encoding.Default))
+                try
                 {
-                    if (!String.IsNullOrEmpty(zapis))
+                    Directory.CreateDirectory(slozka);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Saving the file");
+                    return;
+                }
+            }
+            try
+            {
+                using (FileStream streamUloz = new FileStream(cesta, FileMode.Append))
+                {
+                    using (StreamWriter uloz = new StreamWriter(streamUloz, Encoding.Default))
                     {
-                        uloz.WriteLine(zapis);
+                        if (!String.IsNullOrEmpty(zapis))
+                        {
+                            uloz.WriteLine(zapis);
+                        }
                     }
                 }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Saving the file");
+                return;
             }
         }
 
