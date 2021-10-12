@@ -4,7 +4,7 @@ Windows application for searching releases in Deezer. For found releases, it all
 <img src="/screenshot.png" alt="screenshot">
 
 # Download link
-[Download here](https://github.com/jakubkastner/deezer-albums-search/raw/master/deezer-albums-search_installer/Debug/deezer-albums-search_installer.msi)
+[Download msi installer here](https://github.com/jakubkastner/deezer-albums-search/raw/master/deezer-albums-search_installer/Debug/deezer-albums-search_installer.msi)
 
 # Startup arguments
 1. release name
