@@ -1,10 +1,8 @@
 # Deezer albums search
+Windows application for searching releases in Deezer. For found releases, it allows you to download the cover and tracklist.
 
 # Download link
 [Download here](https://github.com/jakubkastner/deezer-albums-search/raw/master/deezer-albums-search_installer/Debug/deezer-albums-search_installer.msi)
-
-# About
-Windows application for searching releases in Deezer. For found releases, it allows you to download the cover and tracklist.
 
 # Startup arguments
 1. release name
