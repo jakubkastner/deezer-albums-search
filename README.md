@@ -1,5 +1,6 @@
 # Deezer albums search
-Windows application for searching releases in Deezer. For found releases, it allows you to download the cover and tracklist.
+Windows application for searching releases in Deezer. For found releases, it allows you to download the cover and tracklist.  
+<br>
 <img src="/screenshot.png" alt="screenshot">
 
 # Download link
